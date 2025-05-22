@@ -1,95 +1,104 @@
-# Pasos para Configurar un Proyecto Vue.js
+
+# 🌐 Proyecto Vue + PrimeVue + Fake API
+
+Este proyecto está configurado con Vue 3, PrimeVue, i18n, Vue Router y una Fake API REST utilizando `json-server`.
 
 ---
 
-Este README.md resume los pasos clave para configurar y estructurar un proyecto Vue.js, incluyendo la gestión de variables de entorno, la integración de librerías y la configuración de rutas y servicios.
+## 📁 Estructura Inicial del Proyecto
 
-## 1. Configuración de Entorno
+### Archivos de entorno
 
----
+Crear en la raíz del proyecto:
 
-### Variables de Entorno
+```
+.env.development
+.env.production
+```
 
-Crea archivos de entorno en la raíz de `src` para manejar diferentes configuraciones:
+### Contenido base para `.env`
 
--   **`.env.development`**
--   **`.env.production`**
-
-Dentro de cada archivo, define la URL base para tu API, por ejemplo:
-
+```env
+# Base de Path for Fake REST API
 VITE_API_BASE_URL = http://localhost:3000
-
-
-## 2. Estructura de Carpetas en `src`
+```
 
 ---
 
-Organiza tu código en carpetas lógicas dentro de `src`:
+## 📂 Estructura dentro de `src/`
 
--   **`shared`**: Para archivos compartidos como la configuración de servicios.
--   **`pages`**: Para los componentes de tus vistas principales.
--   **`layouts`**: Para la estructura general de la aplicación (encabezado, pie de página, barra lateral).
--   **`routes`**: Para la configuración del enrutador de Vue.
--   **`translate`**: Para la configuración de internacionalización (i18n).
+Crear las siguientes carpetas:
 
-## 3. Instalación de Dependencias
+- `shared/`
+- `layouts/`
+- `pages/`
+- `routes/`
+- `translate/`
 
 ---
 
-Instala las librerías necesarias para el proyecto:
+## 📦 Instalación de dependencias
+
+Ejecutar los siguientes comandos:
 
 ```bash
 npm i axios
 npm install primevue @primeuix/themes
+npm install vue-i18n@next
 npm i vue-router
 npm i json-server
-npm install vue-i18n@next # Reemplaza 'npm i i18n' por esta versión
+```
 
-## 4. Configuración Principal de Vue (main.js)
-Configura la aplicación Vue, incluyendo PrimeVue y los componentes globales. Descomenta las líneas de i18n y router una vez que los archivos estén configurados.
+---
 
-JavaScript
+## 📄 main.js
 
+```js
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 
-import i18n from '@/translate/i18n.js' // Asegúrate de que la ruta sea correcta
-import router from "@/routes/router.js"; // Asegúrate de que la ruta sea correcta
+// import i18n from '@/translate/i18n.js'
+// import router from "@/routes/router.js";
 
 import Button from 'primevue/button';
 
 const app = createApp(App);
+
 app.use(PrimeVue, {
     theme: {
         preset: Aura
     }
 });
+
 app.component('pv-button', Button);
-app.use(i18n)
-app.use(router)
+// app.use(i18n)
+// app.use(router)
+
 app.mount('#app');
+```
 
-## 5. Configuración de Servicios Base (shared/BaseServices.js)
-Crea un servicio base para manejar las solicitudes HTTP usando Axios:
+---
 
-JavaScript
+## 📁 shared > BaseServices.js
 
+```js
 import axios from 'axios'
+
 export class BaseServices {
     static http = axios.create({
         baseURL: import.meta.env.VITE_API_BASE_URL
     })
 }
+```
 
-## 6. Componentes de Páginas y Layouts
-Página de Error (pages/the.response-error.component.vue)
-Un componente básico para manejar errores 404:
+---
 
-Fragmento de código
+## 📁 pages > the.response-error.component.vue
 
+```vue
 <script setup>
 </script>
 
@@ -112,12 +121,30 @@ Fragmento de código
   padding: 20px;
 }
 </style>
-Componentes de Layout (layouts/)
-layouts/main-layouts.component.vue
-Define la estructura principal de la aplicación, integrando el encabezado, pie de página y barra lateral.
+```
 
-Fragmento de código
+---
 
+## 🖼 Generación de Logo
+
+Puedes generar un logo desde:
+
+🔗 [https://www.logo.dev/dashboard/playground/logo-images](https://www.logo.dev/dashboard/playground/logo-images)
+
+---
+
+## 📁 layouts/
+
+Crear los siguientes componentes:
+
+- `main-layout.component.vue`
+- `the-header.component.vue`
+- `the-footer.component.vue`
+- `the-sidebar.component.vue`
+
+### 🧱 main-layout.component.vue
+
+```vue
 <template>
   <div class="layout">
     <the-header />
@@ -143,21 +170,21 @@ import TheSidebar from './the-sidebar.vue'
   flex-direction: column;
   min-height: 100vh;
 }
-
 .main-content {
   width: 100%;
   display: flex;
   flex: 1;
 }
-
 .content {
   flex: 1;
   padding: 20px;
 }
 </style>
-layouts/the-header.component.vue
-Fragmento de código
+```
 
+### 🧱 the-header.component.vue
+
+```vue
 <template>
   <header class="header">
     <h1>Learning center</h1>
@@ -173,9 +200,11 @@ Fragmento de código
   padding: 10px;
 }
 </style>
-layouts/the-footer.component.vue
-Fragmento de código
+```
 
+### 🧱 the-footer.component.vue
+
+```vue
 <template>
   <footer class="footer">
     <p>&copy; 2024 Your Company</p>
@@ -192,9 +221,11 @@ Fragmento de código
   text-align: center;
 }
 </style>
-layouts/the-sidebar.component.vue
-Fragmento de código
+```
 
+### 🧱 the-sidebar.component.vue
+
+```vue
 <template>
   <aside class="sidebar">
     <nav>
@@ -215,50 +246,51 @@ Fragmento de código
   background-color: #f4f4f4;
   padding: 15px;
 }
-
 .sidebar ul {
   list-style-type: none;
   padding: 0;
 }
-
 .sidebar ul li {
   margin: 10px 0;
 }
-
 .sidebar ul li a {
   text-decoration: none;
   color: #333;
 }
 </style>
+```
 
-## 7. Configuración de Rutas (routes/router.js)
-Define las rutas de tu aplicación utilizando Vue Router:
+---
 
-JavaScript
+## 📁 routes > router.js
 
+```js
 import { createRouter, createWebHistory } from "vue-router";
-import LoginForm from '@/pages/LoginForm.vue'; // Asegúrate de tener estos componentes
-import RegisterForm from '@/pages/RegisterForm.vue'; // Asegúrate de tener estos componentes
-import NotFound from '@/pages/the.response-error.component.vue'; // Usa tu componente de error
+
+import LoginForm from '@/pages/LoginForm.vue'
+import RegisterForm from '@/pages/RegisterForm.vue'
+import NotFound from '@/pages/the.response-error.component.vue'
 
 const routes = [
     { path: "/", component: LoginForm },
     { path: '/register', component: RegisterForm },
     { path: '/login', component: LoginForm },
-    { path: '/:pathMatch(.*)*', name:'NotFound', component: NotFound }
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
 ];
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
 export default router;
+```
 
-## 8. Configuración de Internacionalización (translate/i18n.js)
-Configura vue-i18n para manejar múltiples idiomas en tu aplicación:
+---
 
-JavaScript
+## 📁 translate > i18n.js
 
+```js
 import { createI18n } from 'vue-i18n';
 
 const messages = {
@@ -268,7 +300,7 @@ const messages = {
             verDetalles: 'Ver Detalles'
         },
         reservationDetails: {
-            title: 'Detalles de la Reserva',
+            title: 'Detalles de la reservación',
             fechaInicio: 'Fecha de inicio:'
         }
     },
@@ -283,24 +315,62 @@ const messages = {
         }
     }
 };
+
 const i18n = createI18n({
     locale: 'es',
     fallbackLocale: 'es',
     messages
 });
+
 export default i18n;
+```
 
-## 9. Componente Raíz (App.vue)
-El componente principal de tu aplicación, donde se renderizan las rutas:
+---
 
-Fragmento de código
+## 📄 App.vue
 
+```vue
 <script setup>
 </script>
 
 <template>
   <router-view />
 </template>
+```
 
-## 10. Atajos Útiles
-Formatear código: Ctrl + Alt + L
+---
+
+## 🔗 Enlaces en Sidebar
+
+```vue
+<template>
+  <aside class="sidebar">
+    <nav>
+      <ul>
+        <li><RouterLink to="/">Go to Home</RouterLink></li>
+        <li><RouterLink to="/security">Security</RouterLink></li>
+        <li><RouterLink to="/tutorial">Tutorial</RouterLink></li>
+      </ul>
+    </nav>
+  </aside>
+</template>
+```
+
+---
+
+## 🛠 Tips de desarrollo
+
+- Formatear código: `Ctrl + Alt + L`
+
+---
+
+## 🔄 Actualización de i18n
+
+Si necesitas reemplazar una versión incorrecta de i18n:
+
+```bash
+npm uninstall i18n
+npm install vue-i18n@next
+```
+
+---
